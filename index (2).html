@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My FitStats | Your Wellness Pal</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --glass-bg: rgba(255, 255, 255, 0.98);
+            --accent-color: #6a11cb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--primary-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            color: #2d3436;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            color: #636e72;
+            font-style: italic;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .field {
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #444;
+            padding-left: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #f1f2f6;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background: #fdfdfd;
+        }
+
+        input:focus {
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #resultArea {
+            margin-top: 30px;
+            display: none;
+            border-top: 2px solid #f1f2f6;
+            padding-top: 25px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .bmi-circle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bmi-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            display: block;
+            line-height: 1;
+        }
+
+        .bmi-label {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .friend-box {
+            background: #f8faff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #2575fc;
+        }
+
+        .friend-box h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: #2575fc;
+        }
+
+        .friend-box p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Friendly Adjustments */
+        @media (max-width: 400px) {
+            .input-row { flex-direction: column; gap: 0; }
+            .card { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h1>My FitStats</h1>
+        <p>Real talk about your health, from a friend who cares.</p>
+    </div>
+
+    <div class="field">
+        <label>What's your name?</label>
+        <input type="text" id="userName" placeholder="Enter your name">
+    </div>
+
+    <div class="input-row">
+        <div class="field">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="Age">
+        </div>
+        <div class="field">
+            <label>Gender</label>
+            <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="input-row">
+        <div class="field">
+            <label>Height (cm)</label>
+            <input type="number" id="height" placeholder="cm">
+        </div>
+        <div class="field">
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" placeholder="kg">
+        </div>
+    </div>
+
+    <button onclick="calculateBMI()">Analyze Me ✨</button>
+
+    <div id="resultArea">
+        <div class="bmi-circle">
+            <span class="bmi-number" id="bmiOutput">--</span>
+            <span class="bmi-label" id="statusLabel">Normal</span>
+        </div>
+
+        <div class="friend-box" id="suggestionBox">
+            </div>
+    </div>
+</div>
+
+<script>
+    function calculateBMI() {
+        const name = document.getElementById('userName').value || "Friend";
+        const height = document.getElementById('height').value / 100;
+        const weight = document.getElementById('weight').value;
+        
+        if (!height || !weight) {
+            alert("Hey! I need your height and weight to do the math.");
+            return;
+        }
+
+        const bmi = (weight / (height * height)).toFixed(1);
+        const protein = Math.round(weight); // 1g per kg
+        
+        let status = "";
+        let color = "";
+        let chat = "";
+
+        if (bmi < 18.5) {
+            status = "Underweight";
+            color = "#e67e22";
+            chat = `Listen ${name}, you're looking a bit light! We need to get some more fuel in that engine. I'd suggest aiming for about <strong>2,500+ calories</strong> a day. Focus on healthy fats and calorie-dense snacks. Let's build some strength together!`;
+        } else if (bmi < 24.9) {
+            status = "Healthy";
+            color = "#27ae60";
+            chat = `Looking good, ${name}! You're right in the sweet spot. Just keep doing what you're doing. Stay around <strong>2,000–2,200 calories</strong> to maintain this balance. You're killing it!`;
+        } else if (bmi < 29.9) {
+            status = "Overweight";
+            color = "#f1c40f";
+            chat = `Hey ${name}, we're slightly over the line here, but no stress! Just a few small tweaks to your routine will do wonders. Let's try to hit <strong>1,800 calories</strong> for a bit and move a little more each day. You've got this!`;
+        } else {
+            status = "Obese";
+            color = "#e74c3c";
+            chat = `${name}, I'm saying this because I care—your body is working extra hard right now. Let's dial it back to around <strong>1,600 calories</strong> and start with some daily walks. Taking that first step today is a huge win!`;
+        }
+
+        // Update UI
+        document.getElementById('bmiOutput').innerText = bmi;
+        document.getElementById('bmiOutput').style.color = color;
+        
+        const label = document.getElementById('statusLabel');
+        label.innerText = status;
+        label.style.color = color;
+
+        document.getElementById('suggestionBox').innerHTML = `
+            <h3>Hey ${name}, here's the deal:</h3>
+            <p>${chat}</p>
+            <hr style="border:0; border-top:1px solid #ddd; margin:15px 0;">
+            <p><strong>💪 Protein Goal:</strong> Since you weigh ${weight}kg, aim for <strong>${protein}g of protein</strong> daily to keep your muscles happy.</p>
+            <p style="font-size:0.8rem; color:#636e72;"><em>*Remember, I'm just an app! Talk to a doctor for a real medical plan.</em></p>
+        `;
+
+        document.getElementById('resultArea').style.display = "block";
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
